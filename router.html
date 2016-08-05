@@ -1,0 +1,92 @@
+<script>
+/**
+ * CUSTOM SETTINGS
+ */
+var config = {
+	/**
+	 * Your router is base on .... (root folder)
+	 * Ex: ``, `/foo`
+	 */
+	pathPrefix: '/router',
+	/**
+	 * file extension of your page
+	 */
+	fileExtension: '.html',
+	/**
+	 * your page list
+	 */
+	websitePage: ['index', 'hello'],
+};
+
+/**
+ * Default Value
+ * route to index page with `TW`
+ */
+var urlPath = {
+	lang: 'TW',
+	page: '404',
+};
+
+/**
+ * Check language
+ * if #EN / #en then set language as `EN`
+ */
+if( window.location.hash.substr(1, 2).toUpperCase() === 'EN' ) {
+	urlPath.lang = 'EN';
+}
+
+var pathname = window.location.pathname;
+
+/**
+ * Redirect to home page
+ */
+if( pathname === '/' ) {
+	// ....
+	urlPath.page = 'index';
+}
+
+/**
+ * Split path
+ */
+if( pathname.substr(0, 1) === '/' ) {
+	pathname = pathname.substr(1);
+}
+if( pathname.substr(-1) === '/' ) {
+	pathname = pathname.substr(0, pathname.length - 1);
+}
+var pathArr = pathname.split('/');
+pathArr = pathArr.map( function(v) {
+	return v.toLowerCase();
+});
+
+if( config.pathPrefix !== '' ) {
+	pathArr.splice( pathArr.indexOf( config.pathPrefix.substr(1) ), 1 );
+}
+/**
+ * Remove `` value in array
+ */
+while( pathArr.indexOf('') > -1 ) {
+	pathArr.splice( pathArr.indexOf(''), 1 );
+}
+
+/**
+ * Check language again
+ */
+if( pathArr.indexOf('en') > -1 ) {
+	urlPath.lang = 'EN';
+}
+
+/**
+ * Decide which page to redirect
+ */
+for( var i = 0; i < config.websitePage.length; i++ ) {
+	for( var j = 0; j < pathArr.length; j++ ) {
+		if( config.websitePage[i] == pathArr[j] ) {
+			urlPath.page = config.websitePage[i];
+		}
+	}
+}
+
+window.location.href = `${config.pathPrefix}/${urlPath.page}${config.fileExtension}#${urlPath.lang}`;
+
+</script>
