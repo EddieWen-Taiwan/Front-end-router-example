@@ -20,7 +20,7 @@ var config = {
 
 /**
  * Default Value
- * route to index page with `TW`
+ * route to 404 page with `TW`
  */
 var urlPath = {
 	lang: 'TW',
@@ -54,8 +54,7 @@ if( pathname.substr(0, 1) === '/' ) {
 if( pathname.substr(-1) === '/' ) {
 	pathname = pathname.substr(0, pathname.length - 1);
 }
-var pathArr = pathname.split('/');
-pathArr = pathArr.map( function(v) {
+var pathArr = pathname.split('/').map( function(v) {
 	return v.toLowerCase();
 });
 
